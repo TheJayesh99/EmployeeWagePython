@@ -22,7 +22,6 @@ def  calculateEmployeeWage(wagePerHour ,numberOfWorkingDays,workHrsPerMonth,comp
         workingDays = workingDays + 1
 
     totalWage = totalWorkingHours * wagePerHour
-    print(f"{totalWorkingHours} \t {workingDays}")
     print(f"Employee total wage for Company {company} is {totalWage}")
 
 calculateEmployeeWage(20,20,100,"Dmart")
