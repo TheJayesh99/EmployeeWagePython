@@ -5,15 +5,17 @@ IS_PRESENT_PART_TIME = 2
 WAGE_PER_HOUR = 20
 FULL_DAY_HOURS = 8 
 PART_TIME_HOURS = 4
+TOTAL_WORKING_DAYS = 20 
 
 empAttendence = {
-    IS_PRESENT_FULL_DAY :
-    f"Employee is present for full time and the wage is {WAGE_PER_HOUR * FULL_DAY_HOURS}rs",
-    IS_PRESENT_PART_TIME:
-    f"Employee is present for part time and wage is {WAGE_PER_HOUR * PART_TIME_HOURS}rs",
-    IS_ABSENT:
-    f"Employee is absent"
+    IS_PRESENT_FULL_DAY : WAGE_PER_HOUR * FULL_DAY_HOURS,
+    IS_PRESENT_PART_TIME: WAGE_PER_HOUR * PART_TIME_HOURS,
+    IS_ABSENT: 0
     }
 
-checkEmp = random.randint(0,2)
-print(empAttendence.get(checkEmp))
+totalWage = 0
+for i in range(TOTAL_WORKING_DAYS):
+    checkEmp = random.randint(0,2)
+    totalWage = totalWage + empAttendence.get(checkEmp)
+
+print("Employee total wage is ",totalWage)
