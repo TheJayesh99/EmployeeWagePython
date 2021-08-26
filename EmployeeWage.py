@@ -33,10 +33,7 @@ class EmployeeWageBuilder:
 
         self.company_array.append(CompanyEmpWage(wage_per_hour, number_of_working_days, work_hrs_per_month, company))
 
-    @staticmethod
-    def calculate_daily_wage(wage_per_hour, emp_hrs):
-
-        return emp_hrs * wage_per_hour
+    calculate_daily_wage = lambda emp_hrs,wage_per_hour : emp_hrs * wage_per_hour
 
     @staticmethod
     def check_emp_working_hours(check_emp):
@@ -58,7 +55,7 @@ class EmployeeWageBuilder:
             emp_hrs = EmployeeWageBuilder.check_emp_working_hours(check_emp) 
             total_working_hours += emp_hrs
             working_days += 1
-            total_wage += self.calculate_daily_wage(emp_hrs, employee.wage_per_hour)
+            total_wage += EmployeeWageBuilder.calculate_daily_wage(emp_hrs, employee.wage_per_hour)
         return total_wage
     
     def calculate_employee_wage(self):
