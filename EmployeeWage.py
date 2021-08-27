@@ -9,6 +9,18 @@ IS_PRESENT_PART_TIME = 2
 FULL_DAY_HOURS = 8 
 PART_TIME_HOURS = 4
 
+class Error(Exception):...
+    # Base class for other exception
+
+class EmptyCompanyName(Error):...
+    # Raised when company name is empty
+
+class InvaildCompanyDetails(Error):...
+    # Raised when company details are invalid
+
+class InvaildNumberOfCompanys(Error):...
+    # Raised when entered invalid details
+
 class CompanyEmpWage:
     
     def __init__(self, company):
@@ -70,27 +82,33 @@ class EmployeeWageBuilder:
 def get_company_data():
 
     try:
-        wage_per_hour = int(input("Enter the wage_per_hour\n"))
-        number_of_working_days = int(input("Enter the number_of_working_days\n"))
-        work_hrs_per_month = int(input("Enter the work_hrs_per_month\n"))
+        wage_per_hour = input("Enter the wage_per_hour\n")
+        number_of_working_days = input("Enter the number_of_working_days\n")
+        work_hrs_per_month = input("Enter the work_hrs_per_month\n")
         company = input("Enter the company\n")
+
+        if not wage_per_hour.isnumeric() or not number_of_working_days.isnumeric() or not work_hrs_per_month.isnumeric() :
+            raise InvaildCompanyDetails
+
         if len(company) == 0:
-            print(len(company))
-            print("Wrong company name")
-            logger.error("Comapany name could not be empty")
-            return None
+            raise EmptyCompanyName
+
         #setting data in employee details dictionary
         employee_details_dict = {}
-        employee_details_dict["wage_per_hour"] = wage_per_hour
-        employee_details_dict["number_of_working_days"]= number_of_working_days
-        employee_details_dict["work_hrs_per_month"] = work_hrs_per_month
+        employee_details_dict["wage_per_hour"] = int(wage_per_hour)
+        employee_details_dict["number_of_working_days"]= int(number_of_working_days)
+        employee_details_dict["work_hrs_per_month"] = int(work_hrs_per_month)
         employee_details_dict["company_name"] = company
         return employee_details_dict
 
-    except Exception as e:
+    except EmptyCompanyName:
+        print("Wrong company name")
+        logger.error("Comapany name could not be empty")
+        return None
+
+    except InvaildCompanyDetails:
         print("Invalid details re-enter the data")
         logger.debug("Invalid details re-enter the data")
-        logger.error(e)
         return None
 
 
@@ -103,10 +121,12 @@ if __name__ == "__main__":
 
     emp_wage = EmployeeWageBuilder()
     try:
-        num_of_companies = int(input("Enter the number of Companies you want to add : \n"))
-        count_company = 1
+        num_of_companies = input("Enter the number of Companies you want to add : \n")
+        if not num_of_companies.isnumeric():
+            raise InvaildNumberOfCompanys
 
-        while (count_company <= num_of_companies):
+        count_company = 1
+        while (count_company <= int(num_of_companies)):
             print(f"Details for Company {count_company}")
             company = get_company_data()
             if company:
@@ -117,6 +137,6 @@ if __name__ == "__main__":
         employees = "\n".join(str(company_data) for company_data in emp_wage.company_array)
         print(employees)
         
-    except Exception as e:
+    except InvaildNumberOfCompanys:
         print("number of company should be number")
-        logger.debug("Entered value is invalid for numbers of companys")
+        logger.debug("Entered non interger value for numbers of companys")
