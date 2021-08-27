@@ -1,4 +1,7 @@
 import random
+import logging
+
+logging.basicConfig(filename="EmployeeWage.log",filemode="w")
 
 IS_ABSENT = 0
 IS_PRESENT_FULL_DAY = 1
@@ -71,8 +74,10 @@ def get_company_data():
         number_of_working_days = int(input("Enter the number_of_working_days\n"))
         work_hrs_per_month = int(input("Enter the work_hrs_per_month\n"))
         company = input("Enter the company\n")
-        if not company.isalpha() :
-            print("Invalid Company Name")
+        if len(company) == 0:
+            print(len(company))
+            print("Wrong company name")
+            logger.error("Comapany name could not be empty")
             return None
         #setting data in employee details dictionary
         employee_details_dict = {}
@@ -84,12 +89,18 @@ def get_company_data():
 
     except Exception as e:
         print("Invalid details re-enter the data")
+        logger.debug("Invalid details re-enter the data")
+        logger.error(e)
         return None
 
 
 if __name__ == "__main__":
 
     print("Welcome to Employee Wage Builder")
+
+    logger = logging.getLogger()
+    logger.setLevel(level=logging.DEBUG)
+
     emp_wage = EmployeeWageBuilder()
     try:
         num_of_companies = int(input("Enter the number of Companies you want to add : \n"))
@@ -107,4 +118,5 @@ if __name__ == "__main__":
         print(employees)
         
     except Exception as e:
-        print("Entered value is invalid")
+        print("number of company should be number")
+        logger.debug("Entered value is invalid for numbers of companys")
